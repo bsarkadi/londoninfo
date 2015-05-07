@@ -1,0 +1,532 @@
+
+<!--London Info Board by Balazs Sarkadi, 2015. Weather gauges app.-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>London Info Board</title>
+
+     
+     
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  
+ 
+<link rel="stylesheet" href="css/london.css">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ 
+ <!-- Plugins for gauges -->
+<script src="/london/js/raphael.2.1.0.min.js"></script>
+<script src="/london/js/justgage.1.0.1.min.js"></script>
+
+   
+  
+<!-- Bootstrap framework for website layout -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    
+    
+   
+ 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+      <script type="text/javascript">
+    
+   
+   
+   
+   $(document).ready(function(){
+    
+ 
+  
+  
+var values = [];
+  
+  function draw(){
+    
+  var code = document.getElementById("station").value;
+  
+   $.getJSON("php/getpolldata.php?id=" + code, function(mdata) {
+         // Return doesn't work with asynchronous functions, we need another function to get the value
+         retVal(mdata);
+         }
+    )
+ 
+ //Error handling
+ 
+  .fail(function() {
+    alert( "Disruption in data service. Please try again later." );
+  });
+ 
+ function retVal(data){
+  
+  
+  
+  var specarray = data["HourlyAirQualityIndex"]["LocalAuthority"]["Site"]["species"];
+  
+  for (i=0, len = specarray.length; i<len; i++) {
+  values[i] = {value:data["HourlyAirQualityIndex"]["LocalAuthority"]["Site"].species[i]["@AirQualityIndex"], 
+  name:data["HourlyAirQualityIndex"]["LocalAuthority"]["Site"].species[i]["@SpeciesName"],
+  id:data["HourlyAirQualityIndex"]["LocalAuthority"]["Site"].species[i]["@SpeciesCode"]}
+ 
+                                                }
+   
+
+  
+   $('#gaugewidget').append('<div id="' + values[0].id + '" class="gauges"></div>');
+   
+    var g1 = new JustGage({
+    id: values[0].id,
+    value: values[0].value,
+    min: 0,
+    max: 10,
+    title: values[0].name,
+    levelColors: ['#92d050', '#00b050', '#006500', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#000000'],
+      levelColorsGradient: false
+  });
+    
+    
+    
+    $('#gaugewidget').append('<div id="' + values[1].id + '" class="gauges"></div>');
+    
+    var g2 = new JustGage({
+    id: values[1].id,
+    value: values[1].value,
+    min: 0,
+    max: 10,
+    title: values[1].name,
+    levelColors: ['#92d050', '#00b050', '#006500', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#000000'],
+      levelColorsGradient: false
+  });  
+  
+  
+     if (len>2) {
+  
+    $('#gaugewidget').append('<div id="' + values[2].id + '" class="gauges"></div>');
+    
+    var g3 = new JustGage({
+    id: values[2].id,
+    value: values[2].value,
+    min: 0,
+    max: 10,
+    title: values[2].name,
+    levelColors: ['#92d050', '#00b050', '#006500', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#000000'],
+      levelColorsGradient: false
+  });  
+  
+                }
+  
+   if (len>3) {
+  
+    $('#gaugewidget').append('<div id="' + values[3].id + '" class="gauges"></div>');
+    
+    var g4 = new JustGage({
+    id: values[3].id,
+    value: values[3].value,
+    min: 0,
+    max: 10,
+    title: values[3].name,
+    levelColors: ['#92d050', '#00b050', '#006500', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#000000'],
+      levelColorsGradient: false
+  });  
+  
+             }
+  
+  if (len>4) {
+   
+    $('#gaugewidget').append('<div id="' + values[4].id + '" class="gauges"></div>');
+    
+    var g5 = new JustGage({
+    id: values[4].id,
+    value: values[4].value,
+    min: 0,
+    max: 10,
+    title: values[4].name,
+    levelColors: ['#92d050', '#00b050', '#006500', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#000000'],
+      levelColorsGradient: false
+                        });  
+  
+           }
+ 
+  $('#gaugewidget').append('<div id="timestamp">Time of measurement: ' + data["HourlyAirQualityIndex"]["LocalAuthority"]["Site"]["@BulletinDate"] + '</div>');
+  
+ 
+  };
+  
+     
+  }
+  draw();
+    
+  $( "#station" ).change(function() {
+  
+ 
+  $('.gauges').remove();
+  $('#timestamp').remove();
+  
+  draw();
+  });
+  
+  
+  // The MET UK 3-hourly site-specific forecast provides data for the coming 5 days. The array containing today's data is dynamically changing, data for time already passed
+  // is left out. Due to this the dropdown list for selecting the time needs to be created dynamically based on the actual number of items in the array.
+  // Since the time dropdown is re-created with every select change, we need to keep the index of the selected item from the previous state. We need to handle the index change if the
+  // length of the previous array was different (switching between today and the next days)
+   
+  var init = true; 
+  var time="0"; // first available time selected by default
+  var wealen; // global variable to store the length of the time options array
+    
+  console.log(time);
+  
+  function weadraw(){ 
+   
+  var boro = document.getElementById("borough").value;
+  var day = document.getElementById("day").value;
+
+  
+  // we only do these if the function has already been called first when the page loaded, meaining it is now called due to a select change
+  
+  if (!init){time = document.getElementById("time").value;
+   $("#time option").remove();
+    console.log(document.getElementById("time").value, "huhu");
+      console.log(time);
+  }; 
+  
+ 
+  
+  
+  
+   $.getJSON("php/getweadata.php?id=" + boro, function(mdata) {
+         // Return doesn't work with asynchronous functions, we need another function to get the value
+       
+          retweaVal(mdata);
+         }
+    )
+ 
+ //Error handling
+ 
+  .fail(function() {
+    alert( "Disruption in data service. Please try again later." );
+  });
+ 
+ function retweaVal(data){
+  
+ var wealen_old = wealen; // store previous array length
+ 
+ wealen = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"].length; // get new array length
+  
+ //now we create the time select based on the array length 
+  
+ for (i=0;i<wealen;i++){
+ $('#time').append('<option value=' + String(i) + '>' + parseInt(data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][i].$) / 60 + ' h</option>');  
+
+  
+  }
+  
+ // handle index change if we switch between time arrays of different length 
+ if (wealen_old>wealen){time=String(parseInt(time)-(wealen_old-wealen))}
+ else if (wealen_old<wealen){time=String(parseInt(time)+(wealen-wealen_old))}
+ 
+  
+  $("select#time").val(time);
+  
+  //console.log(data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"]);
+  
+  var uv = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].U;
+  
+  var temp = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].T;
+  
+  var ftemp = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].F;
+  
+  var rain = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].Pp;
+  
+  var vis;
+  
+  switch (data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].V) {
+    case "UN":
+        vis = 0;
+        break;
+    case "VP":
+        vis = 1;
+        break;
+    case "PO":
+        vis = 2;
+        break;
+    case "MO":
+        vis = 3;
+        break;
+    case "GO":
+        vis = 4;
+        break;
+    case "VG":
+        vis = 5;
+        break;
+    case "X":
+        vis = 6;
+        break;
+}
+  
+  
+
+  
+  $('#weagauges').append('<div id="uv" class="biggauges"></div>');
+   
+    var g6 = new JustGage({
+    id: "uv",
+    value: uv,
+    min: 0,
+    max: 10,
+    title: "UV Index",
+    levelColors: ['#92d050', '#00b050', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#400000','#000000'],
+      levelColorsGradient: false
+  });
+  
+   $('#weagauges').append('<div id="vis" class="biggauges"></div>');
+   
+    var g7 = new JustGage({
+    id: "vis",
+    value: 4,
+    min: 0,
+    max: 6,
+    title: "Visibility",
+    levelColors: ['#700000', '#c00000', '#e36c0a', '#92d050', '#00b050', '#006000' ],
+      
+  });
+  
+  $('#weagauges').append('<div id="temp" class="biggauges"></div>');
+  
+   var g8 = new JustGage({
+    id: "temp",
+    value: temp,
+    min: -20,
+    max: 40,
+    title: "Temperature",
+    levelColors: ['#104E8B', '#1874CD', '#63B8FF','#B0E2FF', '#FAEBD7', '#FEF1B5', '#FCDC3B','#e36c0a', '#ff0000','#c00000'],
+      levelColorsGradient: false
+  });
+  
+  
+  $('#weagauges').append('<div id="ftemp" class="biggauges"></div>');
+  
+   var g8 = new JustGage({
+    id: "ftemp",
+    value: ftemp,
+    min: -20,
+    max: 40,
+    title: "Feels Like Temp.",
+    levelColors: ['#104E8B', '#1874CD', '#63B8FF','#B0E2FF', '#FAEBD7', '#FEF1B5', '#FCDC3B','#e36c0a', '#ff0000','#c00000'],
+      levelColorsGradient: false
+  });
+   
+   
+  $('#weagauges').append('<div id="rain" class="biggauges"></div>');
+   
+    var g6 = new JustGage({
+    id: "rain",
+    value: rain,
+    min: 0,
+    max: 100,
+    title: "Chance of Rain",
+    levelColors: ['#92d050', '#00b050', '#fbd4b4','#ffc000', '#e36c0a', '#ff0000', '#c00000','#700000', '#400000','#000000'],
+      levelColorsGradient: false
+  }); 
+   
+   
+  
+ }
+   
+  }
+   
+  weadraw();
+    
+  $( "#borough" ).change(function() {
+  init = false;  
+  
+  $('.biggauges').remove();
+
+  
+  weadraw();
+  }); 
+   
+   
+  $( "#day" ).change(function() {
+  
+ init = false; 
+    
+  $('.biggauges').remove();
+
+  
+  weadraw();
+  });
+  
+  
+   $( "#time" ).change(function() {
+  
+ init = false; 
+
+    
+  $('.biggauges').remove();
+
+  weadraw();
+  });  
+   
+   
+   
+   
+   
+      });
+    </script>
+  
+    
+    
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>London Info Board</h1>
+        <p class="lead"><a href="index.html">Tube Facility Finder</a> | <a href="gauges.html">Weather Gauges</a> | <a href="about.html">About</a></p>
+      </div> 
+
+
+
+             <h3>Air Pollution</h3> 
+      <div class="row">
+
+  
+        <div class="col-md-8">
+ 
+ 
+          <div id="gaugewidget"></div>
+         <div style="display:inline-block;">
+          <br/><mark>Air Quality Index value ranges</mark>: <strong>Low (1-3), Moderate (4-6), High (7-9), Very High (10).<br/> (0 means no data available.)</strong><br/>
+          Adults and children with lung problems, and adults with heart problems, who experience symptoms, should consider reducing strenuous physical activity, particularly outdoors,
+          when pollution levels are in the moderate range. They should reduce such activity in case of high levels and avoid it in case of very high levels.
+          Read more on the <a href="http://www.londonair.org.uk/" target="_blank">London Air</a> website and in this <a href="http://webarchive.nationalarchives.gov.uk/20140505104700/http://www.comeap.org.uk/images/stories/Documents/Reports/comeap%20review%20of%20the%20uk%20air%20quality%20index.pdf" target="_blank">report!</a>
+         </div> 
+        
+          
+        </div>
+      
+        
+       
+   
+   
+     <div class="col-md-4">
+    
+    
+        <div class="form-group">
+             <label for="station">Monitoring Sites:</label>
+               <select id="station" value="value" class="form-control">  
+                 <option value="BL0" selected="selected">Camden - Bloomsbury</option>
+                 <option value="CT4">City of London - Beech Street</option>
+                 <option value="GR9">Greenwich - Westhorne Avenue</option>
+                 <option value="HK6">Hackney - Old Street</option>
+                 <option value="HR1">Harrow - Stanmore</option>
+                  <option value="LB4">Lambeth - Brixton Road</option>
+                 <option value="LW2">Lewisham - New Cross</option>
+                 <option value="KC1">North Kensington</option>
+                 <option value="SK6">Southwark - Elephant and Castle</option>
+                 <option value="TH4">Tower Hamlets - Blackwall</option>
+                  <option value="WA7">Wandsworth - Putney High Street</option>
+                 <option value="MY1" >Westminster - Marylebone Road</option>
+               
+                </select>
+          </div>
+        
+      
+        
+        
+    </div>
+     
+   </div>    
+     <h3>Weather</h3> 
+     
+     <div class="row">
+         
+         <div class="col-md-8">
+             <div id="weagauges"></div>
+             <div style="display:inline-block;">
+            <mark>UV Exposure levels</mark>: <strong>Low (1-2), Moderate (3-5), High (6-7), Very High (8-10)</strong></br>
+            <strong>Low-moderate</strong>: Seek shade during midday hours, cover up and wear sunscreen. <strong>High-Very High</strong>: Avoid being outside during midday hours. Shirt, sunscreen and hat are essential.<br/>
+         <mark>Visibility</mark>: <strong>(0) Unknown</strong>, <strong>(1) Very poor</strong> - Less than 1 km, <strong>(2) Poor</strong> - Between 1-4 km, <strong>(3) Moderate</strong> - Between 4-10 km, <strong>(4) Good</strong> - Between 10-20 km, <strong>(5) Very good</strong> - Between 20-40 km, <strong>(6) Excellent</strong> - More than 40 km . <br/>
+	 <mark>Temperatures</mark> are in Celsius. <mark>Chance of rain</mark> (Precipitation probability) is in percent value.<br/>  
+          Read more on the <a href="http://www.metoffice.gov.uk/datapoint/support/documentation" target="_blank">Met Office</a> website!
+         
+        
+         </div>
+        
+         </div>
+   
+   
+   
+    <div class="col-md-4">
+       <div style="width:36%; display:inline-block;">  
+        <div class="form-group">
+             <label for="line">Boroughs:</label>
+               <select id="borough" value="value" class="form-control">  
+                 <option value="350734" selected="selected">Camden</option> 
+                 <option value="352533">Greenwich</option>
+                 <option value="351713">Hackney</option>
+                 <option value="351743">Hammersmith</option>
+                 <option value="352036">Islington</option>
+                 <option value="352075">Kensington</option>
+                 <option value="352196">Lambeth</option>
+                 <option value="352275">Lewisham</option> 
+                 <option value="353605">Southwark</option>
+                 <option value="354075">Wandsworth</option>
+                 <option value="354160" >Westminster</option>
+                </select>
+          </div>
+         </div>
+          <div style="width:32%; display:inline-block;">
+           <div class="form-group">
+             <label for="day">Day:</label>
+               <select id="day" value="value" class="form-control">  
+                 <option value="0" selected="selected">Today</option>
+                 <option value="1">Tomorrow</option>
+                 <option value="2">2 days later</option>
+                 <option value="3">3 days later</option>
+                 <option value="4">4 days later</option>
+                </select>
+          </div>
+           </div> 
+           <div style="width:22%; display:inline-block;">
+        
+         <div class="form-group">
+             <label for="time">Time:</label>
+               <select id="time" value="value" class="form-control">  
+               
+          
+                </select>
+          </div>
+        
+        </div>
+   
+    </div>
+   
+  </div>
+
+
+
+  </div> <!-- /container -->
+
+
+   
+  </body>
+</html>

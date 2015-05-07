@@ -1,0 +1,69 @@
+ .active 
+  {
+    text-decoration: underline;
+}
+
+  
+ 
+ 
+ .form-control{
+ 
+ padding: 6px 6px;
+ 
+ }
+ 
+ .gauges {
+    
+display: inline-block;
+width:100px;
+height:80px;
+ }  
+    
+ .biggauges {
+    
+display: inline-block;
+width:100px;
+height:80px;
+ }  
+    
+ #gaugewidget {height:100px;}
+ 
+#weagauges {height:100px;}
+  
+  
+
+h4 {
+  margin-top: 25px;
+}
+.row {
+  margin-bottom: 20px;
+}
+.row .row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #fff;
+  
+}
+
+hr {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+   
+   
+#map {height:400px;
+  margin-top: 50px;
+} 
+
+ 
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background: #ccc;
+}
