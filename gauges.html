@@ -44,7 +44,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-      <script type="text/javascript">
+    <script type="text/javascript">
     
    
    
@@ -190,7 +190,7 @@ var values = [];
   var time="0"; // first available time selected by default
   var wealen; // global variable to store the length of the time options array
     
-  console.log(time);
+
   
   function weadraw(){ 
    
@@ -202,8 +202,7 @@ var values = [];
   
   if (!init){time = document.getElementById("time").value;
    $("#time option").remove();
-    console.log(document.getElementById("time").value, "huhu");
-      console.log(time);
+   
   }; 
   
  
@@ -244,7 +243,7 @@ var values = [];
   
   $("select#time").val(time);
   
-  //console.log(data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"]);
+  
   
   var uv = data["SiteRep"]["DV"]["Location"]["Period"][day]["Rep"][time].U;
   
@@ -402,7 +401,7 @@ var values = [];
       <div class="page-header">
         <h1>London Info Board</h1>
         </div> 
-        <p class="lead"><a href="index.html">Tube Facility Finder</a> | <a href="gauges.html">Weather Gauges</a> | <a href="about.html">About</a></p>
+      <ul class="nav nav-pills"><li><a href="index.html">Tube Facility Finder</a></li> <li><a href="prop.html">Property LQI</a></li> <li class="active"><a href="gauges.html">Weather Gauges</a></li>  <li><a href="about.html">About</a></ul></li>
       
 
 

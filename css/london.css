@@ -29,7 +29,7 @@
  
  .form-control{
  
- padding: 6px 6px;
+ padding: 1px 1px;
  
  }
  
@@ -86,5 +86,25 @@ hr {
   width: 100%;
   overflow: hidden;
   border: 1px solid #ccc;
-  background: #ccc;
+  background: #FFFACD;
+}
+
+#status {
+  height: 20px;
+  color: #fff;
+  padding-left: 3px;
+  
+}
+
+
+.progress {
+  position: relative;
+  background: #999;
+}
+
+.progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+  
 }

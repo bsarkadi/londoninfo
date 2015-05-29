@@ -22,12 +22,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
   
   
+  
+  
  <!-- Ekko Lightbox for Station Galleries CSS--> 
  <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.3.0/ekko-lightbox.min.css" rel="stylesheet">  
 
 <link rel="stylesheet" href="css/london.css">
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  
+  
  <script src="/london/js/raphael.2.1.0.min.js"></script>
   <script src="/london/js/justgage.1.0.1.min.js"></script>
 
@@ -35,6 +39,8 @@
   
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
     
     
    
@@ -61,7 +67,6 @@
     <![endif]-->
     
       <script type="text/javascript">
-    
    
 
 
@@ -148,10 +153,10 @@
                        + data[i]["commonName"] + '</a>';
                        
       for (k=1; k<jlen; k++){             
-      linkitem += '<div data-toggle="lightbox" data-gallery="hiddenimages" data-remote="https://farm' + json["photos"]["photo"][k].farm + '.staticflickr.com/' + json["photos"]["photo"][k].server + '/' + json["photos"]["photo"][k].id + '_' + json["photos"]["photo"][k].secret +'.jpg" data-title="' + json["photos"]["photo"][k].title +'">';
+      linkitem += '<div data-toggle="lightbox" data-gallery="hiddenimages" data-remote="https://farm' + json["photos"]["photo"][k].farm + '.staticflickr.com/' + json["photos"]["photo"][k].server + '/' + json["photos"]["photo"][k].id + '_' + json["photos"]["photo"][k].secret +'.jpg" data-title="' + json["photos"]["photo"][k].title +'"></div>';
                             }
      
-      $('#inc').append(linkitem + '</div>' + '</td> ' + '<td>' + data[i]["additionalProperties"][j]["value"]+'</td></tr>');                 
+      $('#inc').append(linkitem  + '</td> ' + '<td>' + data[i]["additionalProperties"][j]["value"]+'</td></tr>');                 
                        
                            
       }
@@ -193,15 +198,37 @@
 
  
 
+  var src = 'https://sites.google.com/site/bsarkadifiles/index/' + scode + '.kml';
 
-
+  
+  
+  
+  
+  
  var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 10,
       center: new google.maps.LatLng(51.508742,-0.120850),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
+ 
+ 
+  loadKmlLayer(src, map);
+    
+    
+    function loadKmlLayer(src, map) {
+  var kmlLayer = new google.maps.KmlLayer(src, {
+    suppressInfoWindows: false,
+    preserveViewport: true,
+    map: map
+  });
 
-    var infowindow = new google.maps.InfoWindow();
+  
+  
+  
+  
+}
+
+  //  var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
 
@@ -209,15 +236,16 @@
       marker = new google.maps.Marker({
       position: myLatlng[i],
       map: map,
-      title: markername[i]
+      title: markername[i],
+      icon: 'img/smarker.png'
       });
 
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+   /* google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           infowindow.setContent(locations[i][0]);
           infowindow.open(map, marker);
         }
-      })(marker, i));
+      })(marker, i)); */
       
    
     }
@@ -296,7 +324,7 @@
       <div class="page-header">
         <h1>London Info Board</h1>
         </div> 
-        <p class="lead"><a href="index.html">Tube Facility Finder</a> | <a href="gauges.html">Weather Gauges</a> | <a href="about.html">About</a></p>
+        <ul class="nav nav-pills"><li class="active"><a href="index.html">Tube Facility Finder</a></li> <li><a href="prop.html">Property LQI</a></li> <li><a href="gauges.html">Weather Gauges</a></li>  <li><a href="about.html">About</a></ul></li>
       
 
 
@@ -374,7 +402,7 @@
         </div>
        
         <div class="col-md-6" id="map">
-         
+          <div id="content-window"></div>
           
         </div>
    

@@ -1,5 +1,5 @@
 
-<!--London Info Board by Balazs Sarkadi, 2015. Weather About.-->
+<!--London Info Board by Balazs Sarkadi, 2015. About.-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,7 @@
       <div class="page-header">
         <h1>London Info Board</h1>
         </div> 
-        <p class="lead"><a href="index.html">Tube Facility Finder</a> | <a href="gauges.html">Weather Gauges</a> | <a href="about.html">About</a></p>
+        <ul class="nav nav-pills"><li><a href="index.html">Tube Facility Finder</a></li> <li><a href="prop.html">Property LQI</a></li> <li><a href="gauges.html">Weather Gauges</a></li>  <li class="active"><a href="about.html">About</a></ul></li>
       
 
 
@@ -64,8 +64,10 @@
         <div class="col-md-8">
          <p><mark>London Info Board</mark> is a collection of web applications created for the <a href="http://www.programmr.com/hired_london_hackathon#entries" target="_blank">Hired.com London Hackathon</a> by <a href="mailto:razorwirespromo@gmail.com">Balazs Sarkadi</a>.</p> 
          <p>The website is built on the Bootstrap responsive framework and it supports all device sizes. It contains the following applications: </p>
+         
+         
          <p><mark>Tube Facility Finder</mark>: Find facilities such as cash machines, car parks or photo booths on the lines of the London Underground! Choose a line and a facility,
-         and the app returns the stations with the number of facilities (if available), shows the stations on the embedded Google map and collects a photo gallery of each station from Flickr (using the Flickr photo search API),
+         and the app returns the stations with the number of facilities (if available), shows the stations and the selected underground line on the embedded Google map and collects a photo gallery of each station from Flickr (using the Flickr photo search API),
          which appears in a pop-up if you click on the station's name. There's also a news ticker about travel incidents at stations.<br/>
          The data is provided by <a href="http://www.tfl.gov.uk/info-for/open-data-users/our-open-data" target="_blank">TfL Open Data</a>. Plugins used:<br/>
          <li><a href="http://aamirafridi.com/jquery/jquery-marquee-plugin#examples">jQuery Marquee</a> (news ticker)</li>
@@ -74,6 +76,17 @@
          <li>Google Maps</li><br/>
          <p>This tube facility finder application fills a gap as I haven't found any similar ones, only tube station locators.</p>
           </p>
+         
+         
+          <p><mark>Property LQI</mark>: This web app combines London property listings provided by <a href="http://developer.zoopla.com/" target="_blank">Zoopla API</a> with the Life Quality Index provided by the <a href="https://api.placeilive.com/v1/" target="_blank">PlaceILive.com API</a>.
+         Picking the best neighborhood is of key importance when renting/buying properties and this app spares the user the research by instantly adding the LQI index to the properties. Properties can be listed
+         according to postcode disctrict and status (sale/rent) and the results are displayed on the postcode district map of London.<br/>
+         Plugins used:<br/>
+         <li><a href="http://ashleydw.github.io/lightbox/">Ekko Lightbox</a> (image pop-up)</li>
+         <li>Google Maps</li><br/>
+         
+          </p>
+         
          <p><mark>Weather Gauges</mark>: See the latest Air Pollution data, and 3-hourly weather data for the next 5 days by London boroughs displayed on gauges! The gauges are scaled and colored to match
          the displayed data. Air pollution data is provided by the <a href="http://www.londonair.org.uk/LondonAir/API/" target="_blank">London Air API</a> while weather data comes from
          the <a href="http://www.metoffice.gov.uk/datapoint" target="_blank">Met Office DataPoint</a>. Plugins used:<br/>

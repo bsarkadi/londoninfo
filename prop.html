@@ -1,0 +1,479 @@
+
+<!--London Info Board by Balazs Sarkadi, 2015. Property LQI app.-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>London Info Board</title>
+
+     
+     
+    <!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Ekko Lightbox for Station Galleries CSS--> 
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.3.0/ekko-lightbox.min.css" rel="stylesheet">  
+  
+ 
+<link rel="stylesheet" href="css/london.css">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ 
+ <!-- google maps -->
+    
+ <script src="http://maps.googleapis.com/maps/api/js"></script> 
+
+   
+  
+<!-- Bootstrap framework for website layout -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+
+    
+<!-- Ekko Lightbox for Station Galleries--> 
+ 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/3.2.2/ekko-lightbox.min.js"></script>    
+   
+ 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+    
+
+   
+   
+$(document).ready(function(){
+    
+        
+      
+
+//initialize lightbox for property image pop-up   
+ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+}); 
+   
+  
+  var areachange = false;
+  var init = true;
+  
+  var values = [];
+  var retrieving = false; //variable to block new queries until previous results returned to avoid mixing up of results
+  $( "#area" ).prop( "disabled", true );
+  $( "#district" ).prop( "disabled", true );
+  $( "#statusz" ).prop( "disabled", true );
+  
+ 
+  function draw(){
+  
+  
+  
+  options ="";
+  
+  if (init || areachange) {
+  
+  var areacode = document.getElementById("area").value;
+  
+  //Districts select options dynamically created based on area code selection
+  
+  switch (areacode) {
+  
+    case "EC":
+        options = '<option value="EC1" selected="selected">EC1 Head district</option><option value="EC2">EC2 Bishopsgate</option>' +
+        '<option value="EC3">EC3 Fenchurch Street</option><option value="EC4">EC4 Fleet Street</option>';
+        break;
+          
+    case "WC":
+        options = '<option value="WC1" selected="selected">WC1 Head district</option><option value="WC2">WC2 Strand</option>';
+        break;
+      
+      
+    case "E":
+        options = '<option value="E1" selected="selected">E1 Head district</option><option value="E2">E2 Bethnal Green</option>' +
+        '<option value="E3">E3 Bow</option><option value="E4">E4 Chingford</option><option value="E5">E5 Clapton</option>' +
+        '<option value="E6">E6 East Ham</option><option value="E7">E7 Forest Gate</option><option value="E8">E8 Hackney</option>' +
+        '<option value="E9">E9 Homerton</option><option value="E10">E10 Leyton</option><option value="E11">E11 Leytonstone</option>' +
+        '<option value="E12">E12 Manor Park</option><option value="E13">E13 Plaistow</option><option value="E14">E14 Poplar</option>' +
+        '<option value="E15">E15 Stratford</option><option value="E16">E16 Victoria Docks</option><option value="E17">E17 Walthamstow</option>' +
+        '<option value="E18">E18 Woodford</option><option value="E20">E20 Olympic Park</option>';
+        break;
+  
+    case "N":
+        options = '<option value="N1" selected="selected">N1 Head district</option><option value="N2">N2 East Finchley</option>' +
+        '<option value="N3">N3 Finchley</option><option value="N4">N4 Finsbury Park</option><option value="N5">N5 Highbury</option>' +
+        '<option value="N6">N6 Highgate</option><option value="N7">N7 Holloway</option><option value="N8">N8 Hornsey</option>' +
+        '<option value="N9">N9 Lower Edmonton</option><option value="N10">N10 Muswell Hill</option><option value="N11">N11 New Southgate</option>' +
+        '<option value="N12">N12 North Finchley</option><option value="N13">N13 Palmers Green</option><option value="N14">N14 Southgate</option>' +
+        '<option value="N15">N15 South Tottenham</option><option value="N16">N16 Stoke Newington</option><option value="N17">N17 Tottenham</option>' +
+        '<option value="N18">N18 Upper Edmonton</option><option value="N19">N19 Upper Holloway</option><option value="N20">N20 Whetstone</option>' +
+        '<option value="N21">N21 Winchmore Hill</option><option value="N22">N22 Wood Green</option>' ;
+        break;
+      
+    case "NW":
+        options = '<option value="NW1" selected="selected">NW1 Head district</option><option value="NW2">NW2 Cricklewood</option>' +
+        '<option value="NW3">NW3 Hampstead</option><option value="NW4">NW4 Hendon</option><option value="NW5">NW5 Kentish Town</option>' +
+        '<option value="NW6">NW6 Kilburn</option><option value="NW7">NW7 Mill Hill</option><option value="NW8">NW8 St John\'s Wood</option>' +
+        '<option value="NW9">NW9 West Hendon</option><option value="NW10">NW10 Willesden</option><option value="NW11">NW11 Golders Green</option>' ;
+        break;
+  
+    case "SE":
+        options = '<option value="SE1" selected="selected">SE1 Head district</option><option value="SE2">SE2 Abbey Wood</option>' +
+        '<option value="SE3">SE3 Blackheath</option><option value="SE4">SE4 Brockley</option><option value="SE5">SE5 Camberwell</option>' +
+        '<option value="SE6">SE6 Catford</option><option value="SE7">SE7 Charlton</option><option value="SE8">SE8 Deptford</option>' +
+        '<option value="SE9">SE9 Eltham</option><option value="SE10">SE10 Greenwich</option><option value="SE11">SE11 Kennington</option>' +
+        '<option value="SE12">SE12 Lee</option><option value="SE13">SE13 Lewisham</option><option value="SE14">SE14 New Cross</option>' +
+        '<option value="SE15">SE15 Peckham</option><option value="SE16">SE16 Rotherhithe</option><option value="SE17">SE17 Walworth</option>' +
+        '<option value="SE18">SE18 Woolwich</option><option value="SE19">SE19 Crystal Palace</option><option value="SE20">SE20 Anerley</option>' +
+        '<option value="SE21">SE21 Dulwich</option><option value="SE22">SE22 East Dulwich</option><option value="SE23">SE23 Forest Hill</option>' +
+        '<option value="SE24">SE24 Herne Hill</option><option value="SE25">SE25 South Norwood</option><option value="SE26">SE26 Sydenham</option>' +
+        '<option value="SE27">SE27 West Norwood</option><option value="SE28">SE28 Thamesmead</option>' ;
+        break;
+      
+    case "SW":
+        options = '<option value="SW1" selected="selected">SW1 Head district</option><option value="SW2">SW2 Brixton</option>' +
+        '<option value="SW3">SW3 Chelsea</option><option value="SW4">SW4 Clapham</option><option value="SW5">SW5 Earls Court</option>' +
+        '<option value="SW6">SW6 Fulham</option><option value="SW7">SW7 South Kensington</option><option value="SW8">SW8 South Lambeth</option>' +
+        '<option value="SW9">SW9 Stockwell</option><option value="SW10">SW10 West Brompton</option><option value="SW11">SW11 Head district</option>' +
+        '<option value="SW12">SW12 Balham</option><option value="SW13">SW13 Barnes</option><option value="SW14">SW14 Mortlake</option>' +
+        '<option value="SW15">SW15 Putney</option><option value="SW16">SW16 Streatham</option><option value="SW17">SW17 Tooting</option>' +
+        '<option value="SW18">SW18 Wandsworth</option><option value="SW19">SW19 Wimbledon</option><option value="SW20">SW20 West Wimbledon</option>' ;
+        break;
+      
+      case "W":
+        options = '<option value="W1" selected="selected">W1 Head district</option><option value="W2">W2 Head district</option>' +
+        '<option value="W3">W3 Acton</option><option value="W4">W4 Chiswick</option><option value="W5">W5 Ealing</option>' +
+        '<option value="W6">W6 Hammersmith</option><option value="W7">W7 Hanwell</option><option value="W8">W8 Kensington</option>' +
+        '<option value="W9">W9 Maida Hill</option><option value="W10">W10 North Kensington</option><option value="W11">W11 Notting Hill</option>' +
+        '<option value="W12">W12 Shepherds Bush</option><option value="W13">W13 West Ealing</option><option value="W14">W14 West Kensington</option>';
+        break;  
+      
+      
+}
+
+  $('#district').append(options);
+
+                        }
+  
+  
+    
+  var code = document.getElementById("district").value;
+  
+// Create header for table
+  
+ $('#listings').append('<thead><tr><th>Address</th><th>Bedrooms</th><th>Price</th><th>Photo</th><th>Status</th><th>LQI</th></tr></thead><tbody>');
+    
+  var statusz = document.getElementById("statusz").value;
+  
+  
+  // I've used a php script to bypass the cross domain limitation of getJSON. JSONP was not an option here.
+   
+  
+   $.getJSON("php/getprop.php?id=" + code + "&status=" + statusz, function(mdata) {
+         // Return doesn't work with asynchronous functions, we need another function to get the value
+         retVal(mdata);
+         }
+    )
+ 
+ //Error handling
+ 
+  .fail(function() {
+    alert( "Disruption in data service. Please try again later." );
+  });
+ 
+ function retVal(data){
+  
+  
+  
+  var proparray = data["listing"];
+  
+  
+  
+  if (typeof(proparray) === "undefined") {$('#listings').append('<tr><td></td><td>' + 'No properties found in this district.' + '</td></tr>');}
+  else {
+  
+  retrieving = true;
+  
+  $( "#area" ).prop( "disabled", true );
+  $( "#district" ).prop( "disabled", true );
+  $( "#statusz" ).prop( "disabled", true );
+  $('.progress-bar').css('width', 0+'%').attr('aria-valuenow', 0);   
+ 
+  $('#status').empty()
+  $('#status').append('Retrieving property data. Please wait...'); 
+  
+  
+  
+  var lqiicon;
+  var myLatlng =[];
+  var markername = [];
+  var count = 0; // Variable used for progress bar. We can't use i as the getJSON instances won't return in order
+  
+  for (i=0, len = proparray.length; i<len; i++) { (function(i) {
+  
+  
+  values[i] = {address:data["listing"][i]["displayable_address"], 
+  lat:data["listing"][i]["latitude"],
+  lng:data["listing"][i]["longitude"], thumb:data["listing"][i]["thumbnail_url"],
+  price:data["listing"][i]["price"], status:data["listing"][i]["status"].split('_').join(' '),
+  details:data["listing"][i]["details_url"], bedrooms:data["listing"][i]["num_bedrooms"],
+  image:data["listing"][i]["image_url"]
+  }
+  
+  
+  
+  //Get LQI data
+  
+   $.getJSON("php/getlqi.php?lat=" + values[i].lat + "&lng=" + values[i].lng).success(function(json) {
+    
+   }).then(function(json){
+ 
+    
+    
+   lqiicon = json[0]["lqi"]["icon"];  
+  
+   catlen =  json[0]["lqi_category"].length;
+   
+   
+   //Create listings
+   
+   $('#listings').append('<tr><td><a href="'+ values[i].details  + '" target="_blank">' + values[i].address +'</a></td><td>'+ values[i].bedrooms +'</td><td>'+ values[i].price +'</td><td><a href="' + values[i].image + '" data-toggle="lightbox" data-gallery="hiddenimages" data-title="' +values[i].address+ '"><img src='+ values[i].thumb + '></a></td><td>'+ values[i].status +'</td><td><a href="' + json[0]["lqi_category"][0]["dataGroupUrl"] + '" target="_blank"><img src='+ lqiicon +
+   ' width="53.5" height="52"></a></td></tr>');
+   count++; // Variable used for progress bar. We can't use i as the getJSON instances won't return in order
+   $('.progress-bar').css('width', (count)*10+'%').attr('aria-valuenow', (count)*10);   
+
+ 
+ if (count ===len){ $('#status').empty(); $('#status').append('Ready'); 
+    retrieving = false;
+     $( "#area" ).prop( "disabled", false );
+     $( "#district" ).prop( "disabled", false);
+     $( "#statusz" ).prop( "disabled", false );
+    } // Unblock new query once finished
+     
+ 
+ 
+ //error handling
+   }) .fail(function() {
+    alert( "Disruption in data service. Please try again later." );
+  });
+   
+  //Get coordinates for the markers 
+  myLatlng.push( new google.maps.LatLng(parseFloat(values[i].lat), parseFloat(values[i].lng)));
+  markername.push(values[i].address);
+
+                                                })(i);   
+   
+
+ 
+  }
+  
+  //postcode district KML file. Source: Wikipedia
+  var src = 'https://sites.google.com/site/bsarkadifiles/index/uj.kml';
+  
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: new google.maps.LatLng(parseFloat(values[0].lat), parseFloat(values[0].lng)),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+   
+   //Load layer with postcode districts 
+   loadKmlLayer(src, map);
+  
+      
+  function loadKmlLayer(src, map) {
+  var kmlLayer = new google.maps.KmlLayer(src, {
+    suppressInfoWindows: false,
+    preserveViewport: true,
+    map: map
+  });
+
+ 
+}
+   
+    
+
+    
+    var marker, i;
+
+   for (i=0, len = markername.length; i<len; i++ ){ 
+      marker = new google.maps.Marker({
+      position: myLatlng[i],
+      map: map,
+      title: markername[i]
+      });
+
+   
+      
+   }
+
+  }
+  
+  
+  
+      
+  }
+     
+  }
+  draw();
+   
+   
+  
+  $( "#district" ).change(function() {
+
+   init = false;
+   areachange = false;
+   $('#listings').empty(); 
+  draw();
+  });
+  
+    $( "#area" ).change(function() {
+
+    init = false;
+    areachange = true;
+   $('#listings').empty();
+    $('#district').empty(); 
+  draw();
+  });
+  
+   $( "#statusz" ).change(function() {
+
+   init = false;
+   areachange = false;
+   $('#listings').empty(); 
+  draw();
+  });
+  
+  
+   
+      });
+   
+    </script>
+  
+    
+    
+  </head>
+
+  <body>
+    <div class="container">
+
+    
+      <div class="page-header">
+        <h1>London Info Board</h1>
+        </div> 
+        <ul class="nav nav-pills"><li><a href="index.html">Tube Facility Finder</a></li> <li class="active"><a href="gauges.html">Property LQI</a></li> <li><a href="gauges.html">Weather Gauges</a></li>  <li><a href="about.html">About</a></ul></li>
+      
+
+
+             <h3>Property LQI</h3> 
+      <div class="row">
+
+  
+        <div class="col-md-8" id="infoarea">
+        Browse London properties by postcode district and see their Life Quality Indices! Click the LQI icon for the details on the sub-indices or the address to get to the original ad.
+        Click the thumbnails for a larger image!<br/><br/>
+  
+        
+         
+       <div class="progress progress-striped active">
+   <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span id="status"></span> 
+    </div>
+
+          </div>
+        </div>
+      
+        
+       
+   
+   
+     <div class="col-md-1">
+    
+    
+        <div class="form-group">
+             <label for="area">Area:</label>
+               <select id="area" value="value" class="form-control">  
+                 <option value="EC" selected="selected">EC</option>
+                 <option value="WC">WC</option>
+                 <option value="E">E</option>
+                 <option value="N">N</option>
+                 <option value="NW">NW</option>
+                  <option value="SE">SE</option>
+                 <option value="SW">SW</option>
+                 <option value="W">W</option>
+                
+               
+                </select>
+          </div>
+        
+       
+         
+          
+    </div>
+     
+     
+      <div class="col-md-2">
+    
+    
+        <div class="form-group">
+             <label for="district">Disctrict:</label>
+               <select id="district" value="value" class="form-control">  
+              
+               
+                </select>
+        </div>
+        
+        
+     </div>
+      
+      <div class="col-md-1">
+    
+    
+        <div class="form-group">
+             <label for="status">Status:</label>
+               <select id="statusz" value="value" class="form-control">  
+                 <option value="rent" selected="selected">rent</option>
+                 <option value="sale">sale</option>
+                </select>
+        </div>
+        
+        
+     </div>
+      
+       </div>  <!-- /row -->
+      <div class="row">
+        
+      <div class="col-md-8">
+    
+       <table class="table table-striped" id="listings">
+
+   
+        </tbody></table> 
+      <a href="http://www.zoopla.co.uk/"><img src="http://www.zoopla.co.uk/static/images/mashery/powered-by-zoopla-150x73.png" width="150" height="73" title="Property information powered by Zoopla" alt="Property information powered by Zoopla" border="0"></a>  
+   
+      </div>     
+    <div class="col-md-4" id="map"> 
+     </div>
+     
+        
+  
+    </div>  <!-- /row -->
+
+  </div> <!-- /container -->
+
+
+   
+  </body>
+</html>
