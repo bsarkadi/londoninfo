@@ -1,6 +1,6 @@
 # londoninfo
 
-London Info Board includes two web apps: Tube Facility Finder and Weather Gauges.
+London Info Board includes three web apps: Tube Facility Finder, Property LQI and Weather Gauges.
 
 See them live in action at:
 
