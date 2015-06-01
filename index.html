@@ -292,12 +292,16 @@
        
        var incidents = json["StationStatus"];
        
+       
+       
        var text ="";  
       
        
        for (i= 0, len = incidents.length; i< len; ++i) {
+        
+  
     
-     text += ' *** ' + incidents[i]["Station"]["Name"] + ': ' + incidents[i]["StatusDetails"] ;
+     text += ' *** ' + incidents[i]["Station"]["Name"] + ': ' + incidents[i]["Status"]["Description"] + '  ' + incidents[i]["StatusDetails"] ;
                                                        }
                                                        
                                                 
